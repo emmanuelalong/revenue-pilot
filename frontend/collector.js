@@ -1,4 +1,4 @@
-const API = 'http://localhost:4000/api';
+const API = 'https://revenue-pilot-api.onrender.com/api';
 const app = document.getElementById('app');
 
 let state = {
