@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Revenue Office Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  body { padding: 0; }
+  header {
+    background: var(--teal-dark); color: #fff; padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  header .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #9fc4bb; }
+  header h1 { font-size: 20px; margin: 4px 0 0; }
+  header .refresh { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: #fff; padding: 8px 14px; border-radius: 8px; font-size: 13px; }
+
+  main { max-width: 1160px; margin: 0 auto; padding: 28px 32px 60px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .kpi .val { font-family: var(--mono); font-weight: 600; font-size: 26px; color: var(--teal-dark); }
+  .kpi .lbl { font-size: 12px; color: #5a6f68; margin-top: 4px; text-transform: uppercase; letter-spacing: .04em; }
+  .kpi.alert .val { color: var(--risk); }
+
+  section { margin-bottom: 32px; }
+  section h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--teal-dark); border-bottom: 2px solid var(--line); padding-bottom: 8px; margin-bottom: 16px; }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: #5a6f68; padding: 8px 10px; border-bottom: 1.5px solid var(--line); }
+  td { padding: 10px 10px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; font-family: var(--mono); }
+
+  .grid-2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; }
+
+  .complaint { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .complaint:last-child { border-bottom: none; }
+  .complaint .meta { display: flex; justify-content: space-between; font-size: 12px; color: #5a6f68; margin-bottom: 4px; }
+  .complaint .msg { font-size: 13.5px; }
+  .status-btn { font-size: 11px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--line); background: #fff; }
+
+  canvas { max-height: 220px; }
+
+  .empty { color: #8a9690; font-size: 13px; padding: 12px 0; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="eyebrow">Market Revenue Pilot</div>
+    <h1>Revenue Office Dashboard</h1>
+  </div>
+  <button class="refresh" id="refreshBtn">Refresh</button>
+</header>
+<main>
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <div class="grid-2">
+    <section>
+      <h2>Collection trend — last 21 days</h2>
+      <div class="panel"><canvas id="trendChart"></canvas></div>
+    </section>
+    <section>
+      <h2>Open complaints</h2>
+      <div class="panel" id="complaintsPanel"></div>
+    </section>
+  </div>
+
+  <section>
+    <h2>Collector variance flags <span style="font-weight:400;text-transform:none;color:#5a6f68;">— average daily collection vs. expected (registered vendors × standard fee)</span></h2>
+    <div class="panel">
+      <table id="varianceTable">
+        <thead><tr>
+          <th>Collector</th><th>Market</th><th class="num">Expected/day</th><th class="num">Avg last 7 days</th><th class="num">Variance</th><th>Status</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>By market</h2>
+    <div class="panel">
+      <table id="marketTable">
+        <thead><tr>
+          <th>Market</th><th>County</th><th class="num">Registered vendors</th><th class="num">Standard fee</th><th class="num">Transactions</th><th class="num">Total collected</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="dashboard.js"></script>
+</body>
+</html>

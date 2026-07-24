@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Fee Collector</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+<style>
+  html, body { height: 100%; }
+  body { max-width: 480px; margin: 0 auto; background: var(--teal-dark); }
+
+  #app { min-height: 100vh; display: flex; flex-direction: column; }
+
+  .topbar {
+    background: var(--teal-dark);
+    color: #fff;
+    padding: 18px 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar .brand { display: flex; flex-direction: column; }
+  .topbar .brand .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #9fc4bb; }
+  .topbar .brand .name { font-weight: 700; font-size: 17px; margin-top: 2px; }
+  .topbar .logout { font-size: 12px; color: #9fc4bb; background: none; border: none; padding: 4px; }
+
+  .screen { flex: 1; background: var(--paper); border-radius: 18px 18px 0 0; padding: 22px 20px 40px; }
+
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: #5a6f68; font-size: 13px; margin: 0 0 20px; }
+
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--teal-dark); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: .04em; }
+  input, select {
+    width: 100%; padding: 14px; border-radius: 10px; border: 1.5px solid var(--line);
+    font-size: 16px; font-family: var(--sans); background: #fff; color: var(--ink);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--teal); }
+
+  .btn {
+    display: block; width: 100%; padding: 15px; border-radius: 10px; border: none;
+    background: var(--teal); color: #fff; font-weight: 600; font-size: 15px; margin-top: 22px;
+  }
+  .btn:active { background: var(--teal-dark); }
+  .btn.secondary { background: transparent; color: var(--teal); border: 1.5px solid var(--teal); margin-top: 10px; }
+  .btn.amber { background: var(--amber); }
+
+  .err { background: var(--risk-bg); color: var(--risk); padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-top: 14px; display: none; }
+
+  .vendor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vendor-card {
+    background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px;
+    text-align: left; font-family: var(--sans);
+  }
+  .vendor-card .stall { font-family: var(--mono); font-size: 11px; color: var(--amber); text-transform: uppercase; }
+  .vendor-card .vname { font-weight: 600; font-size: 14px; margin-top: 3px; }
+  .vendor-card .fee { font-size: 12px; color: #5a6f68; margin-top: 3px; }
+  .vendor-card.nophone .stall::after { content: " · no phone"; color: #b0a892; }
+
+  .collect-header { display: flex; align-items: baseline; justify-content: space-between; }
+  .collect-header .back { font-size: 13px; color: var(--teal); background: none; border: none; padding: 4px 0; }
+
+  .method-toggle { display: flex; gap: 8px; margin-top: 8px; }
+  .method-toggle button {
+    flex: 1; padding: 12px; border-radius: 10px; border: 1.5px solid var(--line);
+    background: #fff; font-weight: 600; font-size: 14px; color: var(--ink);
+  }
+  .method-toggle button.active { border-color: var(--teal); background: var(--ok-bg); color: var(--teal-dark); }
+
+  .receipt {
+    background: #fff; border: 1.5px dashed var(--teal); border-radius: 14px; padding: 20px;
+    text-align: center; margin-top: 10px;
+  }
+  .receipt .code { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--teal-dark); letter-spacing: .04em; margin: 10px 0; }
+  .receipt .sms-note { font-size: 12px; color: #5a6f68; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+  .receipt .sms-body { font-family: var(--mono); font-size: 11px; background: var(--paper); border-radius: 8px; padding: 10px; margin-top: 8px; text-align: left; color: #3a4a45; }
+
+  .stat-row { display: flex; gap: 10px; margin-top: 16px; }
+  .stat { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  .stat .num { font-family: var(--mono); font-weight: 600; font-size: 18px; }
+  .stat .lbl { font-size: 11px; color: #5a6f68; margin-top: 2px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="collector.js"></script>
+</body>
+</html>
